@@ -1,9 +1,3 @@
-/*
-Project Notes:
- - add many types of ships
- - border on all sides of grid?
- */
-
 int gamemode; //0=intro, 1=game, 2=endgame
 
 void setup() {
