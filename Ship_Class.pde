@@ -1,19 +1,21 @@
 class Ship {
   int team;
-  String shipName;
   int radarRange;
   int gunRange;
   int x;
   int y;
-
+  int health;
+  String shipName;
+  
   //Ship constructor
-  Ship(int tempTeam, String tempShipName, int tempRadarRange, int tempGunRange, int tempX, int tempY) {
+  Ship(int tempTeam, int tempRadarRange, int tempGunRange, int tempX, int tempY, int tempHealth, String tempShipName) {
     team = tempTeam;
-    shipName = tempShipName;
     radarRange = tempRadarRange;
     gunRange = tempGunRange;
-    x = tempX; //TODO figure out how x and y will work with the grid
-    y = tempY; //TODO when you click on a Cell in the grid how will the ship be sellected
+    x = tempX;
+    y = tempY;
+    health = tempHealth;
+    shipName = tempShipName;
   }
 
   //draw the ships on the screen
@@ -26,13 +28,20 @@ class Ship {
   }
 
   void displayBattleship() {
-    //ellipse();
+    noStroke();
+    ellipse(x+.5*gridScale,y+.5*gridScale,20,20);
   }
   void displayAircraftCarrier() {
+    noStroke();
+    ellipse(x+.5*gridScale,y+.5*gridScale,20,40);
   }
   void displayDestroyer() {
+    noStroke();
+    ellipse(x+.5*gridScale,y+.5*gridScale,40,20);
   }
   void displaySubmarine() {
+    noStroke();
+    ellipse(x+.5*gridScale,y+.5*gridScale,40,40);
   }
 
   void colorShips() {
