@@ -17,7 +17,7 @@ class Ship {
     health = tempHealth;
     shipName = tempShipName;
   }
-
+  
   //draw the ships on the screen
   void displayShip() {
     colorShips(); //set the team color of the ship
@@ -26,28 +26,42 @@ class Ship {
     if (shipName == "Destroyer") displayDestroyer();
     if (shipName == "Submarine") displaySubmarine();
   }
-
+  
+  //TODO make the size of the ships scale based on gridScale 
+  //design for the Battleship
   void displayBattleship() {
     noStroke();
     ellipse(x+.5*gridScale,y+.5*gridScale,20,20);
   }
+  //design for the Aircraft Carrier
   void displayAircraftCarrier() {
     noStroke();
     ellipse(x+.5*gridScale,y+.5*gridScale,20,40);
   }
+  //design for the Destroyer
   void displayDestroyer() {
     noStroke();
     ellipse(x+.5*gridScale,y+.5*gridScale,40,20);
   }
+  //design for the Submarine
   void displaySubmarine() {
     noStroke();
     ellipse(x+.5*gridScale,y+.5*gridScale,40,40);
   }
-
+  
+  //set the cloro for the ships based on what team they are on
   void colorShips() {
     if (team == 0) fill(25, 25, 112); //navy blue
     else if (team == 1) fill(112, 25, 25); //crimson red
     else fill(255); //if a ship is not assigned a team, color it white
+  }//end colorShips
+  
+  //when you click on a Ship, show info and actions for that Ship
+  void displayShipInfo(int tempSidebarCenter){
+    int sidebarCenter = tempSidebarCenter;
     
-  }
+    fill(255);
+    textSize(50);
+    text(shipName, sidebarCenter, 100);
+  }//end displayShipInfo
 }//end Ship class

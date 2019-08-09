@@ -3,6 +3,7 @@ Ship[]boats;
 
 boolean hasSetUpGame = false;
 int gridScale = 100; //the size of each Cell in the grid
+int activeShip = -1;
 
 void game() {
   background(0);
@@ -17,7 +18,7 @@ void game() {
     for (int j = 0; j < grid[1].length; j++) {
       //display each object
       grid[i][j].display();
-      grid[i][j].isMouseOnCell();
+      grid[i][j].clickOnShip();
     }
   }
 
@@ -25,7 +26,13 @@ void game() {
   for (int i = 0; i < boats.length; i++) {
     boats[i].displayShip();
   }
-}
+  
+  if(activeShip != -1){ //if a ship is selected
+    displaySidebar();
+  }
+} //end game
+
+
 
 void setUpGame() {
   int cols = 10;
@@ -44,6 +51,8 @@ void setUpGame() {
   setUpShips();
   hasSetUpGame=true;
 }//end setUpGame
+
+
 
 void setUpShips() {
   int numOfShips = 4; //how many ships are on each team
@@ -65,6 +74,20 @@ void setUpShips() {
   boats[7] = new Ship(1, 2, 2, grid[6][0].x, grid[6][0].y, 100, "Submarine");
 }//end setUpShips
 
+
+
+void displaySidebar(){
+  int sidebarLeft = width/4*3;
+  int sidebarCenter = (sidebarLeft+width)/2;
+  fill(100,100);
+  noStroke();
+  rect(sidebarLeft,0,width/4,height);
+  
+  boats[activeShip].displayShipInfo(sidebarCenter); //show the user a menu with info and actions for that ship
+}
+
+
+
 class Cell {
   // A cell object knows about its location in the grid 
   // as well as its size with the variables x,y,w,h
@@ -85,7 +108,7 @@ class Cell {
     this.displayL2(); //display the heavy fog
     this.displayL3(); //display the light fog
     this.displayBG(); //display the tile outline
-  }
+  }//end display
 
   void displayL1() { //display the ships, rocks, ports, enemy ships, and water
     //display anything that is part of the game
@@ -104,13 +127,17 @@ class Cell {
     stroke(0, 255, 0);
     strokeWeight(2);
     rect(x, y, w, h);
-  }
+  }//end displayBG
 
-  void isMouseOnCell() {
+  void clickOnShip() {
     if (mouseX>=x && mouseX<x+w && mouseY>=y && mouseY<y+h) { //is the mouse on top
       if (mousePressed==true) { //if the mouse is on top and pressed
-        println(this.x, this.y);
+        for(int i=0; i<boats.length; i++){ //loop through all the Ships
+          if(boats[i].x == x && boats[i].y == y){ //if you clicked on a Ship
+            activeShip = i; //select that ship
+          }
+        }
       }
     }
-  }//end isMouseOnCell
+  }//end clickOnShip
 }//end Cell class
