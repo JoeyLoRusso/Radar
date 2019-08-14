@@ -4,10 +4,11 @@ Ship[]boats;
 boolean hasSetUpGame = false;
 int gridScale = 100; //the size of each Cell in the grid
 int activeShip = -1;
+int activePlayer = 0;
 
 void game() {
   background(0);
-
+  
   //create the grid at the start of the game (only runs once)
   if (hasSetUpGame == false) {
     setUpGame();
@@ -26,8 +27,8 @@ void game() {
   for (int i = 0; i < boats.length; i++) {
     boats[i].displayShip();
   }
-  
-  if(activeShip != -1){ //if a ship is selected
+
+  if (activeShip != -1) { //if a ship is selected
     displaySidebar();
   }
 } //end game
@@ -59,31 +60,31 @@ void setUpShips() {
 
   boats = new Ship[numOfShips*2];
 
-  //int tempTeam, int tempRadarRange, int tempGunRange, int tempX, int tempY, int tempHealth, String tempShipName
-  
+  //int tempTeam, int tempRadarRange, int tempGunRange, int tempSpeed, int tempX, int tempY, int tempHealth, String tempShipName
+
   //create the P1 ships
-  boats[0] = new Ship(0, 2, 2, grid[0][9].x, grid[0][9].y, 100, "Battleship");
-  boats[1] = new Ship(0, 2, 2, grid[1][9].x, grid[1][9].y, 100, "Aircraft Carrier");
-  boats[2] = new Ship(0, 2, 2, grid[2][9].x, grid[2][9].y, 100, "Destroyer");
-  boats[3] = new Ship(0, 2, 2, grid[3][9].x, grid[3][9].y, 100, "Submarine");
-  
+  boats[0] = new Ship(0, 2, 3, 2, grid[0][9].x, grid[0][9].y, 200, "Battleship");
+  boats[1] = new Ship(0, 2, 3, 2, grid[1][9].x, grid[1][9].y, 200, "Aircraft Carrier");
+  boats[2] = new Ship(0, 2, 3, 2, grid[2][9].x, grid[2][9].y, 100, "Destroyer");
+  boats[3] = new Ship(0, 3, 2, 2, grid[3][9].x, grid[3][9].y, 50, "Submarine");
+
   //create the P2 ships
-  boats[4] = new Ship(1, 2, 2, grid[9][0].x, grid[9][0].y, 100, "Battleship");
-  boats[5] = new Ship(1, 2, 2, grid[8][0].x, grid[8][0].y, 100, "Aircraft Carrier");
-  boats[6] = new Ship(1, 2, 2, grid[7][0].x, grid[7][0].y, 100, "Destroyer");
-  boats[7] = new Ship(1, 2, 2, grid[6][0].x, grid[6][0].y, 100, "Submarine");
+  boats[4] = new Ship(1, 2, 3, 2, grid[9][0].x, grid[9][0].y, 200, "Battleship");
+  boats[5] = new Ship(1, 2, 3, 2, grid[8][0].x, grid[8][0].y, 200, "Aircraft Carrier");
+  boats[6] = new Ship(1, 2, 3, 2, grid[7][0].x, grid[7][0].y, 100, "Destroyer");
+  boats[7] = new Ship(1, 3, 2, 2, grid[6][0].x, grid[6][0].y, 50, "Submarine");
 }//end setUpShips
 
 
 
-void displaySidebar(){
+void displaySidebar() {
   int sidebarLeft = width/4*3;
   int sidebarCenter = (sidebarLeft+width)/2;
-  fill(100,100);
+  fill(100, 100);
   noStroke();
-  rect(sidebarLeft,0,width/4,height);
-  
-  boats[activeShip].displayShipInfo(sidebarCenter); //show the user a menu with info and actions for that ship
+  rect(sidebarLeft, 0, width/4, height);
+
+  boats[activeShip].displayShipInfo(sidebarCenter, sidebarLeft); //show the user a menu with info and actions for that ship
 }
 
 
@@ -130,14 +131,22 @@ class Cell {
   }//end displayBG
 
   void clickOnShip() {
-    if (mouseX>=x && mouseX<x+w && mouseY>=y && mouseY<y+h) { //is the mouse on top
-      if (mousePressed==true) { //if the mouse is on top and pressed
-        for(int i=0; i<boats.length; i++){ //loop through all the Ships
-          if(boats[i].x == x && boats[i].y == y){ //if you clicked on a Ship
+    if (mouseX>=x && mouseX<x+w && mouseY>=y && mouseY<y+h && mousePressed==true) { //is the mouse on top and pressed
+
+      boolean newActive=false;
+      int i=0;
+      while (i<boats.length && newActive == false) {//loop through all the Ships
+        println("i="+i);
+        if (boats[i].x == x && boats[i].y == y) { //if you clicked on a Ship
+          if (activePlayer == boats[i].team) { //if the ship is your own
+            newActive = true; //tell the loop you have found a ship you own
             activeShip = i; //select that ship
-          }
-        }
-      }
-    }
+          }//end if the ship is your own
+        } else { //if you didnt click on a Ship
+          activeShip = -1; //declare that there should be no Ship currently selected (none on the sidebar)
+        }//end else
+        i++; //look at the next Ship in the loop
+      }//end while loop
+    }//end if the mouse on top and pressed
   }//end clickOnShip
 }//end Cell class
