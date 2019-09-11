@@ -136,12 +136,11 @@ class Cell {
       boolean newActive=false;
       int i=0;
       while (i<boats.length && newActive == false) {//loop through all the Ships
-        println("i="+i);
         if (boats[i].x == x && boats[i].y == y) { //if you clicked on a Ship
-          if (activePlayer == boats[i].team) { //if the ship is your own
+          //if (activePlayer == boats[i].team) { //if the ship is your own
             newActive = true; //tell the loop you have found a ship you own
             activeShip = i; //select that ship
-          }//end if the ship is your own
+          //}//end if the ship is your own
         } else { //if you didnt click on a Ship
           activeShip = -1; //declare that there should be no Ship currently selected (none on the sidebar)
         }//end else
