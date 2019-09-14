@@ -7,10 +7,12 @@ class Ship {
   int y;
   int health;
   String shipName;
-
+  
+  int scaleX, scaleY;
+  
   String ability;
 
-  ArrayList<ActiveSpace> activeSpaces = new ArrayList<ActiveSpace>();
+  //ArrayList<ActiveSpace> activeSpaces = new ArrayList<ActiveSpace>();
 
   //Ship constructor
   Ship(int tempTeam, int tempRadarRange, int tempGunRange, int tempSpeed, int tempX, int tempY, int tempHealth, String tempShipName) {
@@ -22,6 +24,9 @@ class Ship {
     y = tempY;
     health = tempHealth;
     shipName = tempShipName;
+    
+    scaleX = grid[x][y].scaleX;
+    scaleY = grid[x][y].scaleY;
 
     assignAbility();
   }
@@ -48,22 +53,22 @@ class Ship {
   //design for the Battleship
   void displayBattleship() {
     noStroke();
-    ellipse(x+.5*gridScale, y+.5*gridScale, 20, 20);
+    ellipse(scaleX+.5*grid[0][0].w, scaleY+.5*grid[0][0].h, 20, 20);
   }
   //design for the Aircraft Carrier
   void displayAircraftCarrier() {
     noStroke();
-    ellipse(x+.5*gridScale, y+.5*gridScale, 20, 40);
+    ellipse(scaleX+.5*grid[0][0].w, scaleY+.5*grid[0][0].h, 20, 40);
   }
   //design for the Destroyer
   void displayDestroyer() {
     noStroke();
-    ellipse(x+.5*gridScale, y+.5*gridScale, 40, 20);
+    ellipse(scaleX+.5*grid[0][0].w, scaleY+.5*grid[0][0].h, 40, 20);
   }
   //design for the Submarine
   void displaySubmarine() {
     noStroke();
-    ellipse(x+.5*gridScale, y+.5*gridScale, 40, 40);
+    ellipse(scaleX+.5*grid[0][0].w, scaleY+.5*grid[0][0].h, 40, 40);
   }
 
   //set the cloro for the ships based on what team they are on
@@ -77,12 +82,7 @@ class Ship {
 
   //Move
   void moveShip() {
-    activeSpaces.add(new ActiveSpace(int(x+.5*gridScale), int(y+.5*gridScale), int(x+.5*gridScale+1), int(y+.5*gridScale+1)));
-    while (true) {
-      for (int i = 0; i < activeSpaces.size(); i++) {
-        activeSpaces.get(i).displayTarget();
-      }
-    }
+    findActiveSpaces(x,y,speed);
     // 1: Select active spaces (spaces you can move to)
     //    Find out what spaces are x units away left and right, up and down, and a combination of the two where x is speed
     // 2: Display something on those spaces

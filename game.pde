@@ -2,13 +2,12 @@ Cell[][]grid;
 Ship[]boats;
 
 boolean hasSetUpGame = false;
-int gridScale = 100; //the size of each Cell in the grid
 int activeShip = -1;
 int activePlayer = 0;
 
 void game() {
   background(0);
-  
+
   //create the grid at the start of the game (only runs once)
   if (hasSetUpGame == false) {
     setUpGame();
@@ -38,15 +37,15 @@ void game() {
 void setUpGame() {
   int cols = 10;
   int rows = 10;
-  int gridBorderX = 100; //where the grid starts on the left
-  int gridBorderY = 50; //where the grid starts on the top
+
+  int gridScale = 100; //the size of each Cell in the grid
 
   grid = new Cell[cols][rows];
 
   for (int i = 0; i < grid[0].length; i++) {
     for (int j = 0; j < grid[1].length; j++) {
       // Initialize each object
-      grid[i][j] = new Cell(i*gridScale+gridBorderX, j*gridScale+gridBorderY, gridScale, gridScale);//why arent x and y numbers 1-10???
+      grid[i][j] = new Cell(i, j, gridScale, gridScale);
     }//end for loop j
   }//end for loop i
   setUpShips();
@@ -85,4 +84,23 @@ void displaySidebar() {
   rect(sidebarLeft, 0, width/4, height);
 
   boats[activeShip].displayShipInfo(sidebarCenter, sidebarLeft); //show the user a menu with info and actions for that ship
+}
+
+
+
+void findActiveSpaces(int iCurrentX, int iCurrentY, int iRange) {
+  int currentX = iCurrentX;
+  int currentY = iCurrentY;
+  int range = iRange;
+  for (int i = 0; i < grid[0].length; i++) {
+    for (int j = 0; j < grid[1].length; j++) {
+      if (abs(currentX-i) <= range || abs(currentY-j) <=range) { //if the Cell i,j is in range
+        //if (currentX ) { //as long as Cell i,j is not the current cell
+          println("IN RANGE: "+ i, j);
+          fill(255);
+          ellipse(grid[i][j].scaleX, grid[i][j].scaleY, 100,100); //TODO NOW: create a grid center var. use that. fix y, use multiple of grid cols?
+        //}
+      }//end if
+    }//end for loop j
+  }//end for loop i
 }

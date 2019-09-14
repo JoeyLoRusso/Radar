@@ -3,8 +3,11 @@ class Cell {
   // as well as its size with the variables x,y,w,h
   int x, y; // x,y location
   int w, h; // width and height
+  int scaleX, scaleY;
   boolean active; //the locations the activeShip is able to move or attack
-
+  
+  int gridBorderX = 100; //where the grid starts on the left
+  int gridBorderY = 50; //where the grid starts on the top
 
   // Cell Constructor
   Cell(int tempX, int tempY, int tempW, int tempH) {
@@ -12,6 +15,8 @@ class Cell {
     y = tempY;
     w = tempW;
     h = tempH;
+    scaleX = x*w+gridBorderX;
+    scaleY = y*h+gridBorderY;
     active=false;
   }
 
@@ -38,19 +43,19 @@ class Cell {
     fill(0, 255);
     stroke(0, 255, 0);
     strokeWeight(2);
-    rect(x, y, w, h);
+    rect(scaleX, scaleY, w, h);
   }//end displayBG
 
   void clickOnShip() {
-    if (mouseX>=x && mouseX<x+w && mouseY>=y && mouseY<y+h && mousePressed==true) { //is the mouse on top and pressed
+    if (mouseX>=scaleX && mouseX<scaleX+w && mouseY>=scaleY && mouseY<scaleY+h && mousePressed==true) { //is the mouse on top and pressed
 
       boolean newActive=false;
       int i=0;
       while (i<boats.length && newActive == false) {//loop through all the Ships
         if (boats[i].x == x && boats[i].y == y) { //if you clicked on a Ship
           //if (activePlayer == boats[i].team) { //if the ship is your own
-            newActive = true; //tell the loop you have found a ship you own
-            activeShip = i; //select that ship
+          newActive = true; //tell the loop you have found a ship you own
+          activeShip = i; //select that ship
           //}//end if the ship is your own
         } else { //if you didnt click on a Ship
           activeShip = -1; //declare that there should be no Ship currently selected (none on the sidebar)
@@ -59,12 +64,10 @@ class Cell {
       }//end while loop
     }//end if the mouse on top and pressed
   }//end clickOnShip
-  
-  void findActiveSpaces(){
-    
+
+  void isActiveSpaces() {
   }//end findActiveSpaces
-  
-  void displayActiveSpaces(){
-    
+
+  void displayActiveSpaces() {
   }//end displayActiveSpaces
 }//end Cell class
