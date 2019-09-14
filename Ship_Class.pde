@@ -7,8 +7,10 @@ class Ship {
   int y;
   int health;
   String shipName;
-  
+
   String ability;
+
+  ArrayList<ActiveSpace> activeSpaces = new ArrayList<ActiveSpace>();
 
   //Ship constructor
   Ship(int tempTeam, int tempRadarRange, int tempGunRange, int tempSpeed, int tempX, int tempY, int tempHealth, String tempShipName) {
@@ -20,11 +22,11 @@ class Ship {
     y = tempY;
     health = tempHealth;
     shipName = tempShipName;
-    
+
     assignAbility();
   }
-  
-  void assignAbility(){
+
+  void assignAbility() {
     if (shipName == "Battleship") ability = ""; //
     else if (shipName == "Aircraft Carrier") ability = "Scout"; //
     else if (shipName == "Destroyer") ability = ""; //
@@ -70,36 +72,40 @@ class Ship {
     else if (team == 1) fill(112, 25, 25); //crimson red
     else fill(255); //if a ship is not assigned a team, color it white
   }//end colorShips
-  
-  
-  
+
+
+
   //Move
-  void moveShip(){
+  void moveShip() {
+    activeSpaces.add(new ActiveSpace(int(x+.5*gridScale), int(y+.5*gridScale), int(x+.5*gridScale+1), int(y+.5*gridScale+1)));
+    while (true) {
+      for (int i = 0; i < activeSpaces.size(); i++) {
+        activeSpaces.get(i).displayTarget();
+      }
+    }
     // 1: Select active spaces (spaces you can move to)
     //    Find out what spaces are x units away left and right, up and down, and a combination of the two where x is speed
     // 2: Display something on those spaces
     // 3: If the user clicks on an active space, change the possision of the ship to that space
-    
+
     //int[] openSpaces = new int[9];
     //openSpaces = findOpenSpaces();
   }
-  
+
   //Attack
-  void attackShip(){
-    
+  void attackShip() {
   }
-  
+
   //Ability
-  void useShipAbility(){
-    
+  void useShipAbility() {
   }
-  
+
   //int[] findOpenSpaces(){
-    //return ;
+  //return ;
   //}
-  
-  
-  
+
+
+
   //when you click on a Ship, show info and actions for that Ship
   void displayShipInfo(int tempSidebarCenter, int tempSidebarLeft) {
     int sidebarCenter = tempSidebarCenter;
@@ -122,9 +128,9 @@ class Ship {
       text("SPEED: " + speed, quad3, 200);
       text("RADAR RANGE: " + radarRange, quad1, 300);
       text("GUN RANGE: " + gunRange, quad3, 300);
-      
+
       //Commands: Move, Attack, Ability (different for each ship)
-      
+
       //Draw the buttons
       //Move button
       rectMode(CENTER);
@@ -134,7 +140,7 @@ class Ship {
       fill(200);
       textSize(50);
       text("MOVE", sidebarCenter, 500);
-      
+
       //Attack button
       rectMode(CENTER);
       fill(80);
@@ -143,8 +149,8 @@ class Ship {
       fill(200);
       textSize(50);
       text("ATTACK", sidebarCenter, 650);
-      
-       //Ability button
+
+      //Ability button
       rectMode(CENTER);
       fill(80);
       rect(sidebarCenter, 800, buttonWidth, buttonHeight);
@@ -152,30 +158,29 @@ class Ship {
       fill(200);
       textSize(50);
       text(ability.toUpperCase(), sidebarCenter, 800);
-      
+
       //Move pressed
-      if(mouseX > sidebarCenter-buttonWidth/2 && mouseX < sidebarCenter+buttonWidth/2 && mouseY > 500-buttonHeight/2 && mouseY < 500+buttonHeight/2){ //if mouse is over 'move'
+      if (mouseX > sidebarCenter-buttonWidth/2 && mouseX < sidebarCenter+buttonWidth/2 && mouseY > 500-buttonHeight/2 && mouseY < 500+buttonHeight/2) { //if mouse is over 'move'
         //TODO make the button quickly fade darker when the mouse is over
-        if(mousePressed==true){
+        if (mousePressed==true) {
           moveShip();
         }
       }
-      
+
       //Attack pressed
-      if(mouseX > sidebarCenter-buttonWidth/2 && mouseX < sidebarCenter+buttonWidth/2 && mouseY > 650-buttonHeight/2 && mouseY < 650+buttonHeight/2){ //if mouse is over 'attack'
-        if(mousePressed==true){
+      if (mouseX > sidebarCenter-buttonWidth/2 && mouseX < sidebarCenter+buttonWidth/2 && mouseY > 650-buttonHeight/2 && mouseY < 650+buttonHeight/2) { //if mouse is over 'attack'
+        if (mousePressed==true) {
           attackShip();
         }
       }
-      
+
       //Ability pressed
-      if(mouseX > sidebarCenter-buttonWidth/2 && mouseX < sidebarCenter+buttonWidth/2 && mouseY > 800-buttonHeight/2 && mouseY < 800+buttonHeight/2){ //if mouse is over 'ability'
-        if(mousePressed==true){
+      if (mouseX > sidebarCenter-buttonWidth/2 && mouseX < sidebarCenter+buttonWidth/2 && mouseY > 800-buttonHeight/2 && mouseY < 800+buttonHeight/2) { //if mouse is over 'ability'
+        if (mousePressed==true) {
           useShipAbility();
         }
       }
-      
-    }else{ //if ship dosen't belongs to the active player
+    } else { //if ship dosen't belongs to the active player
       //TODO Give some info about ships the user clicks on but don't control
     }//end if ship dosen't belongs to the active player
   }//end displayShipInfo
