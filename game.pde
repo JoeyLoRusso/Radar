@@ -94,11 +94,11 @@ void findActiveSpaces(int iCurrentX, int iCurrentY, int iRange) {
   int range = iRange;
   for (int i = 0; i < grid[0].length; i++) {
     for (int j = 0; j < grid[1].length; j++) {
-      if (abs(currentX-i) <= range || abs(currentY-j) <=range) { //if the Cell i,j is in range
+      if (abs(currentX-i) <= range && abs(currentY-j) <=range) { //if the Cell i,j is in range
         //if (currentX ) { //as long as Cell i,j is not the current cell
-          println("IN RANGE: "+ i, j);
-          fill(255);
-          ellipse(grid[i][j].scaleX, grid[i][j].scaleY, 100,100); //TODO NOW: create a grid center var. use that. fix y, use multiple of grid cols?
+          println("IN RANGE: "+ i, j, currentX, currentY);
+          fill(255, 100);
+          ellipse(grid[i][j].scaleX+50, grid[i][j].scaleY+50, 100,100); //TODO NOW: create a grid center var. use that. fix y, use multiple of grid cols?
         //}
       }//end if
     }//end for loop j
